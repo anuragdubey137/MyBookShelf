@@ -1,0 +1,39 @@
+// 1️⃣ Prisma client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 2️⃣ Database connection
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 3️⃣ User model
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  books     Book[]   // One-to-many relation
+  createdAt DateTime @default(now())
+}
+
+// 4️⃣ Book model
+model Book {
+  id         String      @id @default(uuid())
+  book     String
+  author     String
+  status     BookStatus  @default(TO_READ)
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+// 5️⃣ Enum for book status
+enum BookStatus {
+  TO_READ
+  READING
+  COMPLETED
+}
