@@ -42,23 +42,23 @@ export async function POST(req: NextRequest) {
 
 
 export async function GET(req: NextRequest) {
-  // Get userId from query parameters
+
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
 
-  // If userId is provided, filter by userId, otherwise return all books
+  
   const books = userId
     ? await prisma.book.findMany({
         where: {
           userId: userId,
         },
         include: {
-          user: true, // Optional: include user details
+          user: true, 
         },
       })
     : await prisma.book.findMany({
         include: {
-          user: true, // Optional: include user details
+          user: true, 
         },
       });
 
@@ -77,9 +77,9 @@ export async function DELETE(req: Request) {
       );
     }
 
-    // Delete book
+   
     await prisma.book.delete({
-      where: { id: id },  // make sure ID is string
+      where: { id: id },  
     });
 
     return NextResponse.json({ message: "Book deleted successfully" });

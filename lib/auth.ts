@@ -20,30 +20,30 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email and password are required");
         }
 
-        // Check if user exists
+       
         let user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        // If user doesn't exist -> create one
+        
         if (!user) {
           const hashedPassword = await bcrypt.hash(credentials.password, 10);
           user = await prisma.user.create({
             data: {
               email: credentials.email,
               password: hashedPassword,
-              name: credentials.email.split("@")[0], // optional name from email
+              name: credentials.email.split("@")[0], 
             },
           });
         } else {
-          // If user exists, verify password
+   
           const isValid = await bcrypt.compare(credentials.password, user.password);
           if (!isValid) {
             throw new Error("Invalid password");
           }
         }
 
-        // Return user data for session
+       
         return {
           id: user.id,
           name: user.name,

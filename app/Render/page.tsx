@@ -21,7 +21,6 @@ export default function DashboardPage() {
     const fetchBooks = async () => {
       if (!session?.user || !("id" in session.user)) return;
 
-      // session.user.id might be typed as unknown by next-auth types, cast if needed
       const userId = (session.user as any).id;
       const res = await fetch(`/api/books?userId=${userId}`);
       const data = await res.json();
